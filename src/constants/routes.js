@@ -1,0 +1,26 @@
+export const ROUTES = {
+  HOME: "/",
+  ABOUT: "/about",
+  PACKAGES: "/packages",
+  PACKAGE_DETAILS: (slug) => `/packages/${slug}`,
+  BLOG: "/blog",
+  GALLERY: "/gallery",
+  TESTIMONIALS: "/testimonials",
+  CONTACT: "/contact",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  DASHBOARD: "/dashboard",
+  ADMIN: "/admin",
+  UNAUTHORIZED: "/unauthorized",
+  FORBIDDEN: "/forbidden",
+};
+
+export const NAV_LINKS = [
+  { href: ROUTES.HOME, label: "Home" },
+  { href: ROUTES.PACKAGES, label: "Packages" },
+  { href: ROUTES.BLOG, label: "Blog" },
+  { href: ROUTES.GALLERY, label: "Gallery" },
+  { href: ROUTES.TESTIMONIALS, label: "Testimonials" },
+  { href: ROUTES.ABOUT, label: "About" },
+  { href: ROUTES.CONTACT, label: "Contact" },
+];
