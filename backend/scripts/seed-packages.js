@@ -4,9 +4,11 @@
  */
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { setServers } from "dns/promises";
 import { Package } from "../src/models/Package.model.js";
 import { slugify } from "../src/utils/slugify.js";
 
+setServers(["8.8.8.8"]);
 dotenv.config();
 
 const packages = [

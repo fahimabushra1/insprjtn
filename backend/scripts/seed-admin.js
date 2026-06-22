@@ -6,8 +6,10 @@
 import admin from "firebase-admin";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { setServers } from "dns/promises";
 import { User } from "../src/models/User.model.js";
 
+setServers(["8.8.8.8"]);
 dotenv.config();
 
 const ADMIN_EMAIL = "bushra.arifeen@gmail.com";
