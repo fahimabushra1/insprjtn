@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import HeroSection from "@/features/home/HeroSection";
 import FeaturedPackagesSection from "@/features/home/FeaturedPackagesSection";
 import WhyChooseUsSection from "@/features/home/WhyChooseUsSection";
+import TestimonialsSection from "@/features/home/TestimonialsSection";
+import LatestBlogsSection from "@/features/home/LatestBlogsSection";
 import { fetchFeaturedServer } from "@/services/package.server";
+import { fetchBlogsServer } from "@/services/blog.server";
+import { fetchTestimonialsServer } from "@/services/testimonial.server";
 import { createMetadata } from "@/utils/seo";
 import { ROUTES } from "@/constants/routes";
 
@@ -19,12 +23,28 @@ export const metadata = createMetadata({
 
 export default async function HomePage() {
   let featuredPackages = [];
+  let latestBlogs = [];
+  let testimonials = [];
 
   try {
-    const response = await fetchFeaturedServer();
-    featuredPackages = response?.data || [];
+    const packagesRes = await fetchFeaturedServer();
+    featuredPackages = packagesRes?.data || [];
   } catch {
     featuredPackages = [];
+  }
+
+  try {
+    const blogsRes = await fetchBlogsServer({ page: 1, limit: 3 });
+    latestBlogs = blogsRes?.data?.items || [];
+  } catch {
+    latestBlogs = [];
+  }
+
+  try {
+    const testimonialsRes = await fetchTestimonialsServer({ page: 1, limit: 3 });
+    testimonials = testimonialsRes?.data?.items || [];
+  } catch {
+    testimonials = [];
   }
 
   return (
@@ -32,6 +52,8 @@ export default async function HomePage() {
       <HeroSection />
       <FeaturedPackagesSection packages={featuredPackages} />
       <WhyChooseUsSection />
+      <TestimonialsSection testimonials={testimonials} />
+      <LatestBlogsSection blogs={latestBlogs} />
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="rounded-2xl bg-primary px-8 py-12 text-center text-primary-foreground md:px-16">

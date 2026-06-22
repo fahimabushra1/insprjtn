@@ -286,6 +286,27 @@ image,
 createdAt
 }
 
+# Cloudinary Requirements
+
+Store:
+
+- Package Images
+- Blog Images
+- Gallery Images
+- User Profile Photos
+
+Requirements:
+
+- Upload
+- Delete
+- Replace
+
+Store only Cloudinary URLs in MongoDB.
+
+Create:
+
+src/utils/cloudinary.js
+
 ## testimonials
 
 {
@@ -461,9 +482,8 @@ useBookings.js
 usePayments.js
 useBlogs.js
 useGallery.js
-useSuccessAlert.js
-useErrorAlert.js
-useDeleteConfirmation.js
+useToast()
+useDeleteConfirmation()
 
 ---
 

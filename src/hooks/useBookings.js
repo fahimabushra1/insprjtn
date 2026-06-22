@@ -38,3 +38,16 @@ export function useCancelBooking() {
     },
   });
 }
+
+export function useUpdateBookingStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, status }) => bookingService.updateStatus(id, status),
+    onSuccess: (data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["bookings", id] });
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+    },
+  });
+}

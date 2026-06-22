@@ -1,24 +1,212 @@
-import { createMetadata } from "@/utils/seo";
+"use client";
 
-export const revalidate = 300;
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion } from "framer-motion";
+import { FiMail, FiPhone, FiMapPin, FiClock } from "react-icons/fi";
+import { useSubmitContact } from "@/hooks/useContacts";
+import { useSuccessAlert } from "@/hooks/useSuccessAlert";
+import { useErrorAlert } from "@/hooks/useErrorAlert";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import ButtonLoader from "@/components/loaders/ButtonLoader";
 
-export const metadata = createMetadata({
-  title: "Contact",
-  description: "Get in touch with Insaniat Parjatan for Sundarban tour inquiries.",
-  path: "/contact",
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(5, "Phone number must be at least 5 digits"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 export default function ContactPage() {
+  const submitContact = useSubmitContact();
+  const successAlert = useSuccessAlert();
+  const errorAlert = useErrorAlert();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    submitContact.mutate(data, {
+      onSuccess: () => {
+        successAlert("Message Sent", "We will get back to you as soon as possible!");
+        reset();
+      },
+      onError: (err) => {
+        errorAlert("Submission Failed", err.message || "Failed to submit message.");
+      },
+    });
+  };
+
   return (
-    <div className="container mx-auto px-4 py-10 md:py-16">
-      <h1 className="text-3xl font-bold md:text-4xl">Contact Us</h1>
-      <p className="mt-4 max-w-2xl text-muted-foreground">
-        Have questions about our Sundarban tours? Reach out via WhatsApp using the
-        floating button, or email us at info@insaniatparjatan.com.
-      </p>
-      <p className="mt-4 text-muted-foreground">
-        Full contact form will be available in Phase 3.
-      </p>
+    <div className="min-h-screen bg-gradient-to-b from-background to-emerald-950/5 py-12 md:py-20">
+      <div className="container mx-auto px-4 max-w-6xl">
+        {/* Header */}
+        <div className="mx-auto max-w-3xl text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-3">
+              Get In Touch
+            </span>
+            <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl mb-4">
+              Contact <span className="text-primary">Us</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Have questions about our Sundarban tours? Reach out and we will help you plan your journey.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Contact Info Cards */}
+          <div className="space-y-6 lg:col-span-1">
+            <Card className="border-emerald-950/10 bg-card/65 transition-all hover:border-emerald-600/20 shadow-sm">
+              <CardContent className="p-6 flex gap-4 items-start">
+                <div className="rounded-xl bg-primary/10 p-3 text-primary">
+                  <FiPhone className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Phone</h3>
+                  <p className="mt-1 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <a href="tel:+8801884545974">+880 1884-545974</a>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Sat - Thu, 9am - 6pm</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-emerald-950/10 bg-card/65 transition-all hover:border-emerald-600/20 shadow-sm">
+              <CardContent className="p-6 flex gap-4 items-start">
+                <div className="rounded-xl bg-primary/10 p-3 text-primary">
+                  <FiMail className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Email</h3>
+                  <p className="mt-1 text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <a href="mailto:info@insaniatparjatan.com">info@insaniatparjatan.com</a>
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">24/7 online support</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-emerald-950/10 bg-card/65 transition-all hover:border-emerald-600/20 shadow-sm">
+              <CardContent className="p-6 flex gap-4 items-start">
+                <div className="rounded-xl bg-primary/10 p-3 text-primary">
+                  <FiMapPin className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Office Location</h3>
+                  <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+                    Khulna Shipyard Road, Khulna, Bangladesh
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Contact Form */}
+          <div className="lg:col-span-2">
+            <Card className="border-emerald-950/10 bg-card/65 shadow-sm">
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="John Doe"
+                        {...register("name")}
+                        className={errors.name ? "border-destructive focus-visible:ring-destructive" : "border-emerald-950/10 focus-visible:ring-emerald-600"}
+                      />
+                      {errors.name && (
+                        <p className="text-xs text-destructive">{errors.name.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john@example.com"
+                        {...register("email")}
+                        className={errors.email ? "border-destructive focus-visible:ring-destructive" : "border-emerald-950/10 focus-visible:ring-emerald-600"}
+                      />
+                      {errors.email && (
+                        <p className="text-xs text-destructive">{errors.email.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input
+                      id="phone"
+                      type="text"
+                      placeholder="+880 17XXXXXXXX"
+                      {...register("phone")}
+                      className={errors.phone ? "border-destructive focus-visible:ring-destructive" : "border-emerald-950/10 focus-visible:ring-emerald-600"}
+                    />
+                    {errors.phone && (
+                      <p className="text-xs text-destructive">{errors.phone.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea
+                      id="message"
+                      rows={5}
+                      placeholder="Hi, I am interested in booking a Sundarban tour..."
+                      {...register("message")}
+                      className={errors.message ? "border-destructive focus-visible:ring-destructive" : "border-emerald-950/10 focus-visible:ring-emerald-600"}
+                    />
+                    {errors.message && (
+                      <p className="text-xs text-destructive">{errors.message.message}</p>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full sm:w-auto h-11 px-8"
+                    disabled={submitContact.isPending}
+                  >
+                    {submitContact.isPending ? (
+                      <>
+                        <ButtonLoader className="mr-2 h-4 w-4" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Message"
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

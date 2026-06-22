@@ -9,7 +9,7 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
-  if (err.name === "ValidationError") {
+  if (err?.name === "ValidationError") {
     const errors = Object.values(err.errors).map((e) => ({
       field: e.path,
       message: e.message,
@@ -21,7 +21,7 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
-  if (err.code === 11000) {
+  if (err?.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
     return res.status(409).json({
       success: false,

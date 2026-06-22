@@ -20,3 +20,16 @@ export function useSubmitPayment() {
     },
   });
 }
+
+export function useVerifyPayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) => paymentService.verify(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["payments"] });
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+    },
+  });
+}

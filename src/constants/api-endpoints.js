@@ -25,6 +25,33 @@ export const API_ENDPOINTS = {
     LIST: `${API_BASE}/payments`,
     VERIFY: (id) => `${API_BASE}/payments/${id}/verify`,
   },
+  BLOGS: {
+    LIST: `${API_BASE}/blogs`,
+    BY_SLUG: (slug) => `${API_BASE}/blogs/${slug}`,
+    BY_ID: (id) => `${API_BASE}/blogs/${id}`,
+  },
+  GALLERY: {
+    LIST: `${API_BASE}/gallery`,
+    BY_ID: (id) => `${API_BASE}/gallery/${id}`,
+  },
+  TESTIMONIALS: {
+    LIST: `${API_BASE}/testimonials`,
+    BY_ID: (id) => `${API_BASE}/testimonials/${id}`,
+  },
+  CONTACTS: {
+    SUBMIT: `${API_BASE}/contacts`,
+    LIST: `${API_BASE}/contacts`,
+    BY_ID: (id) => `${API_BASE}/contacts/${id}`,
+  },
+  USERS: {
+    LIST: `${API_BASE}/users`,
+    UPDATE_ROLE: (id) => `${API_BASE}/users/${id}/role`,
+    BY_ID: (id) => `${API_BASE}/users/${id}`,
+  },
+  ANALYTICS: {
+    STATS: `${API_BASE}/analytics`,
+  },
+  UPLOAD: `${API_BASE}/upload`,
 };
 
 export default API_BASE;
