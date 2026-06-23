@@ -33,20 +33,56 @@ router.post(
 
     // Determine folder based on request query/role
     const folder = req.query.folder || "insprjtn";
-    
-    // Upload buffer to Cloudinary
-    const result = await uploadToCloudinary(req.file.buffer, folder);
 
-    res.status(200).json(
-      new ApiResponse(
-        200,
-        {
-          url: result.secure_url,
-          publicId: result.public_id,
-        },
-        "Image uploaded successfully"
-      )
-    );
+    // Upload buffer to Cloudinary
+    try {
+      const result = await uploadToCloudinary(req.file.buffer, folder);
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          {
+            url: result.secure_url,
+            publicId: result.public_id,
+          },
+          "Image uploaded successfully"
+        )
+      );
+    } catch (error) {
+      console.warn("Cloudinary upload failed or timed out. Falling back to mock URL.", error.message);
+      
+      if (process.env.NODE_ENV === "development") {
+        // Fallback URLs based on folder name
+        let mockUrl = "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80"; // default forest
+        
+        const folderLower = folder.toLowerCase();
+        if (folderLower.includes("package")) {
+          mockUrl = "https://images.unsplash.com/photo-1589553416260-178fa4159f6b?auto=format&fit=crop&w=800&q=80"; // mangrove river
+        } else if (folderLower.includes("blog")) {
+          mockUrl = "https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=800&q=80"; // bengal tiger
+        } else if (folderLower.includes("gallery")) {
+          mockUrl = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80"; // nature background
+        } else if (folderLower.includes("user") || folderLower.includes("testimonial") || folderLower.includes("profile")) {
+          mockUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80"; // avatar
+        }
+
+        const mockPublicId = `mock_${folder}_${Date.now()}`;
+
+        return res.status(200).json(
+          new ApiResponse(
+            200,
+            {
+              url: mockUrl,
+              publicId: mockPublicId,
+              isMock: true
+            },
+            "Image upload timed out/failed, returned a placeholder"
+          )
+        );
+      }
+      
+      // If not in development mode, rethrow the error
+      throw error;
+    }
   })
 );
 

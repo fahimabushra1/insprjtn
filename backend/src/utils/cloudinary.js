@@ -16,14 +16,40 @@ cloudinary.config({
  */
 export const uploadToCloudinary = (fileBuffer, folder = "insprjtn") => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder },
-      (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
+    let active = true;
+    const timeoutId = setTimeout(() => {
+      if (active) {
+        active = false;
+        reject(new Error("Cloudinary upload request timed out after 8000ms"));
       }
-    );
-    uploadStream.end(fileBuffer);
+    }, 8000);
+
+    try {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder },
+        (error, result) => {
+          clearTimeout(timeoutId);
+          if (!active) return;
+          active = false;
+          if (error) return reject(error);
+          resolve(result);
+        }
+      );
+
+      uploadStream.on("error", (err) => {
+        clearTimeout(timeoutId);
+        if (!active) return;
+        active = false;
+        reject(err);
+      });
+
+      uploadStream.end(fileBuffer);
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (!active) return;
+      active = false;
+      reject(err);
+    }
   });
 };
 
@@ -54,12 +80,12 @@ export const getPublicIdFromUrl = (url) => {
     if (parts.length < 2) return null;
     const pathAndVersion = parts[1]; // e.g. "v1234567/folder/public_id.jpg" or "folder/public_id.jpg"
     const pathParts = pathAndVersion.split("/");
-    
+
     // Shift off version tag if it's present (like "v1624329241")
     if (pathParts[0].match(/^v\d+$/)) {
       pathParts.shift();
     }
-    
+
     const fullPath = pathParts.join("/");
     const dotIndex = fullPath.lastIndexOf(".");
     return dotIndex === -1 ? fullPath : fullPath.substring(0, dotIndex);

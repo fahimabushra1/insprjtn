@@ -1,4 +1,4 @@
-// Nodemon restarted trigger
+// Nodemon restarted trigger 2
 import app from "./app.js";
 import { env } from "./config/env.js";
 import { connectDB } from "./config/db.js";
