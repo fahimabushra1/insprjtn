@@ -4,7 +4,11 @@ import { Payment } from "@/lib/db/models/Payment.model";
 import { verifyAuth } from "@/lib/backend/auth";
 import { apiResponse, apiError } from "@/lib/backend/response";
 
+import { backendLogger } from "@/lib/backend/logger";
+
 export async function GET(request: NextRequest) {
+  const reqStart = Date.now();
+  backendLogger.info("GET /api/payments started");
   try {
     const { user } = await verifyAuth(request);
     await connectDB();
@@ -25,6 +29,7 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
+    const queryStart = Date.now();
     const [payments, total] = await Promise.all([
       Payment.find(filter)
         .populate("bookingId")
@@ -35,11 +40,30 @@ export async function GET(request: NextRequest) {
         .lean(),
       Payment.countDocuments(filter),
     ]);
+    backendLogger.info(`MongoDB Payment query took ${Date.now() - queryStart}ms`);
 
+    // Map payments to ensure nested populated objects are never null
+    const sanitizedPayments = payments.map((payment: any) => ({
+      ...payment,
+      userId: payment.userId || {
+        _id: "deleted-user",
+        name: "Deleted User",
+        email: "deleted@insprjtn.com",
+        phone: "N/A"
+      },
+      bookingId: payment.bookingId || {
+        _id: "deleted-booking",
+        packageId: { title: "Deleted Package" },
+        bookingStatus: "cancelled",
+        paymentStatus: "failed"
+      }
+    }));
+
+    backendLogger.info(`GET /api/payments finished in ${Date.now() - reqStart}ms`);
     return apiResponse(
       200,
       {
-        items: payments,
+        items: sanitizedPayments,
         pagination: {
           page,
           limit,
@@ -50,6 +74,7 @@ export async function GET(request: NextRequest) {
       "Payments retrieved successfully"
     );
   } catch (error: any) {
+    backendLogger.error("GET /api/payments error", error);
     const [statusStr, message] = error.message.split(": ");
     const status = parseInt(statusStr) || 500;
     return apiError(status, message || error.message);

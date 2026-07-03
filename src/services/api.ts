@@ -14,11 +14,25 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const auth = getFirebaseAuth();
-    const user = auth?.currentUser;
-
-    if (user) {
-      const token = await user.getIdToken();
-      config.headers.Authorization = `Bearer ${token}`;
+    if (auth) {
+      try {
+        await auth.authStateReady();
+        const user = auth.currentUser;
+        if (user) {
+          const token = await user.getIdToken();
+          if (config.headers) {
+            if (typeof config.headers.set === "function") {
+              config.headers.set("Authorization", `Bearer ${token}`);
+            } else {
+              config.headers.Authorization = `Bearer ${token}`;
+            }
+          } else {
+            config.headers = { Authorization: `Bearer ${token}` } as any;
+          }
+        }
+      } catch (authError) {
+        console.error("Error retrieving auth state or token:", authError);
+      }
     }
     return config;
   },

@@ -5,12 +5,13 @@ import { createMetadata } from "@/utils/seo";
 
 export const revalidate = 120;
 
-export const metadata = createMetadata({
-  title: "Tour Packages",
-  description:
-    "Browse Sundarban tour packages — day trips, overnight stays, and multi-day adventures with Insaniat Parjatan.",
-  path: "/packages",
-});
+export async function generateMetadata() {
+  return createMetadata({
+    title: "Tour Packages | Insaniat Parjatan",
+    description: "Browse Sundarban tour packages — day trips, overnight stays, and multi-day adventures with Insaniat Parjatan.",
+    path: "/packages",
+  });
+}
 
 export default async function PackagesPage() {
   let packages = [];

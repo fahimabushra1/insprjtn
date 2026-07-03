@@ -30,10 +30,14 @@ export default function AdminPaymentsPage() {
 
   // Filter payments client side
   const filteredPayments = allPayments.filter((payment) => {
+    const customerName = payment.userId?.name || "Deleted User";
+    const txId = payment.transactionId || "";
+    const method = payment.paymentMethod || "";
+
     const matchesSearch =
-      payment.transactionId?.toLowerCase().includes(search.toLowerCase()) ||
-      payment.userId?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      payment.paymentMethod?.toLowerCase().includes(search.toLowerCase());
+      txId.toLowerCase().includes(search.toLowerCase()) ||
+      customerName.toLowerCase().includes(search.toLowerCase()) ||
+      method.toLowerCase().includes(search.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || payment.paymentStatus === statusFilter;
@@ -47,12 +51,16 @@ export default function AdminPaymentsPage() {
   };
 
   const handleVerify = () => {
+    if (!selectedPayment?._id) {
+      errorAlert("Error", "No payment selected.");
+      return;
+    }
     verifyMutation.mutate(selectedPayment._id, {
       onSuccess: () => {
         successAlert("Payment Verified", "The transaction proof was approved and booking is confirmed.");
         setIsModalOpen(false);
       },
-      onError: (err) => {
+      onError: (err: any) => {
         errorAlert("Verification Failed", err.message || "Failed to verify transaction proof.");
       },
     });
@@ -196,23 +204,23 @@ export default function AdminPaymentsPage() {
               {/* Details */}
               <div className="text-sm space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Customer</span>
-                  <span className="font-semibold text-slate-900">{selectedPayment.userId?.name}</span>
+                  <span className="text-slate-500 font-medium">Customer</span>
+                  <span className="font-semibold text-slate-900">{selectedPayment.userId?.name || "Deleted User"}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Transaction ID</span>
+                  <span className="text-slate-500 font-medium">Transaction ID</span>
                   <span className="font-mono font-bold text-slate-950 uppercase">
                     {selectedPayment.transactionId}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Payment Method</span>
+                  <span className="text-slate-500 font-medium">Payment Method</span>
                   <span className="font-bold uppercase text-slate-700">
                     {selectedPayment.paymentMethod}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Paid Amount</span>
+                  <span className="text-slate-500 font-medium">Total Paid Amount</span>
                   <span className="font-bold text-emerald-800 text-lg">
                     {formatCurrency(selectedPayment.amount)}
                   </span>

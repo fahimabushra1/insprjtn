@@ -7,6 +7,7 @@ export const ROUTES = {
   GALLERY: "/gallery",
   TESTIMONIALS: "/testimonials",
   CONTACT: "/contact",
+  SHOP: "/shop",
   LOGIN: "/login",
   REGISTER: "/register",
   DASHBOARD: "/dashboard",
@@ -18,6 +19,7 @@ export const ROUTES = {
 export const NAV_LINKS = [
   { href: ROUTES.HOME, label: "Home" },
   { href: ROUTES.PACKAGES, label: "Packages" },
+  { href: ROUTES.SHOP, label: "Shop" },
   { href: ROUTES.BLOG, label: "Blog" },
   { href: ROUTES.GALLERY, label: "Gallery" },
   { href: ROUTES.TESTIMONIALS, label: "Testimonials" },

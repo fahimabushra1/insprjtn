@@ -17,6 +17,7 @@ import {
   FiHome,
   FiCalendar,
   FiMap,
+  FiShoppingBag,
 } from "react-icons/fi";
 import { useAuth } from "@/hooks/useAuth";
 import FullPageLoader from "@/components/loaders/FullPageLoader";
@@ -27,6 +28,7 @@ import { ROUTES } from "@/constants/routes";
 const ADMIN_LINKS = [
   { href: ROUTES.ADMIN, label: "Overview", icon: FiLayout },
   { href: `${ROUTES.ADMIN}/packages`, label: "Packages", icon: FiCompass },
+  { href: `${ROUTES.ADMIN}/products`, label: "Products", icon: FiShoppingBag },
   { href: `${ROUTES.ADMIN}/bookings`, label: "Bookings", icon: FiBookOpen },
   { href: `${ROUTES.ADMIN}/payments`, label: "Payments", icon: FiDollarSign },
   { href: `${ROUTES.ADMIN}/blogs`, label: "Blogs", icon: FiBookOpen },

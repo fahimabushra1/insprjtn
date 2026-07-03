@@ -307,7 +307,7 @@ export default function AdminBlogsPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1">
                     <div className="flex justify-between items-center">
-                      <Label htmlFor="title">Article Title (English)</Label>
+                      <Label htmlFor="title" className="text-slate-700 font-semibold">Article Title (English)</Label>
                       <button
                         type="button"
                         onClick={() => handleTranslate("title", "en")}
@@ -317,13 +317,13 @@ export default function AdminBlogsPage() {
                         {translatingField === "title_en" ? "Translating..." : "Translate to BN ➜"}
                       </button>
                     </div>
-                    <Input id="title" {...register("title")} className="border-slate-200 bg-transparent" />
+                    <Input id="title" {...register("title")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                     {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex justify-between items-center">
-                      <Label htmlFor="titleBn">Article Title (Bangla)</Label>
+                      <Label htmlFor="titleBn" className="text-slate-700 font-semibold">Article Title (Bangla)</Label>
                       <button
                         type="button"
                         onClick={() => handleTranslate("title", "bn")}
@@ -333,20 +333,20 @@ export default function AdminBlogsPage() {
                         {translatingField === "title_bn" ? "Translating..." : "➜ Translate to EN"}
                       </button>
                     </div>
-                    <Input id="titleBn" {...register("titleBn")} className="border-slate-200 bg-transparent" />
+                    <Input id="titleBn" {...register("titleBn")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                     {errors.titleBn && <p className="text-xs text-red-500">{errors.titleBn.message}</p>}
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <Label htmlFor="author">Author Name</Label>
-                  <Input id="author" {...register("author")} className="border-slate-200 bg-transparent" />
+                  <Label htmlFor="author" className="text-slate-700 font-semibold">Author Name</Label>
+                  <Input id="author" {...register("author")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                   {errors.author && <p className="text-xs text-red-500">{errors.author.message}</p>}
                 </div>
 
                 {/* Cover Photo upload */}
                 <div className="space-y-2">
-                  <Label>Thumbnail Cover Photo</Label>
+                  <Label className="text-slate-700 font-semibold">Thumbnail Cover Photo</Label>
                   {imageUrl ? (
                     <div className="relative h-32 w-56 group rounded-lg overflow-hidden border">
                       <img src={imageUrl} className="h-full w-full object-cover" />
@@ -372,7 +372,7 @@ export default function AdminBlogsPage() {
                 <div className="space-y-4 border-t pt-4">
                   <div className="space-y-1">
                     <div className="flex justify-between items-center">
-                      <Label htmlFor="content">Content (English)</Label>
+                      <Label htmlFor="content" className="text-slate-700 font-semibold">Content (English)</Label>
                       <button
                         type="button"
                         onClick={() => handleTranslate("content", "en")}
@@ -382,13 +382,13 @@ export default function AdminBlogsPage() {
                         {translatingField === "content_en" ? "Translating..." : "Translate to BN ➜"}
                       </button>
                     </div>
-                    <Textarea id="content" rows={6} {...register("content")} className="border-slate-200 bg-transparent" />
+                    <Textarea id="content" rows={6} {...register("content")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                     {errors.content && <p className="text-xs text-red-500">{errors.content.message}</p>}
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex justify-between items-center">
-                      <Label htmlFor="contentBn">Content (Bangla)</Label>
+                      <Label htmlFor="contentBn" className="text-slate-700 font-semibold">Content (Bangla)</Label>
                       <button
                         type="button"
                         onClick={() => handleTranslate("content", "bn")}
@@ -398,7 +398,7 @@ export default function AdminBlogsPage() {
                         {translatingField === "content_bn" ? "Translating..." : "➜ Translate to EN"}
                       </button>
                     </div>
-                    <Textarea id="contentBn" rows={6} {...register("contentBn")} className="border-slate-200 bg-transparent" />
+                    <Textarea id="contentBn" rows={6} {...register("contentBn")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                     {errors.contentBn && <p className="text-xs text-red-500">{errors.contentBn.message}</p>}
                   </div>
                 </div>

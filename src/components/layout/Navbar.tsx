@@ -42,6 +42,7 @@ export default function Navbar() {
       switch (label) {
         case "Home": return "হোম";
         case "Packages": return "প্যাকেজসমূহ";
+        case "Shop": return "শপ";
         case "Blog": return "ব্লগ";
         case "Gallery": return "গ্যালারি";
         case "Testimonials": return "প্রশংসাপত্র";

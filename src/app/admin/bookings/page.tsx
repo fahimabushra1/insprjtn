@@ -31,10 +31,14 @@ export default function AdminBookingsPage() {
 
   // Client side searching & filtering
   const filteredBookings = allBookings.filter((booking) => {
+    const customerName = booking.userId?.name || "Deleted User";
+    const customerEmail = booking.userId?.email || "";
+    const packageTitle = booking.packageId?.title || "Deleted Package";
+
     const matchesSearch =
-      booking.userId?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      booking.userId?.email?.toLowerCase().includes(search.toLowerCase()) ||
-      booking.packageId?.title?.toLowerCase().includes(search.toLowerCase());
+      customerName.toLowerCase().includes(search.toLowerCase()) ||
+      customerEmail.toLowerCase().includes(search.toLowerCase()) ||
+      packageTitle.toLowerCase().includes(search.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || booking.bookingStatus === statusFilter;
@@ -48,6 +52,10 @@ export default function AdminBookingsPage() {
   };
 
   const handleUpdateStatus = (status) => {
+    if (!selectedBooking?._id) {
+      errorAlert("Error", "No booking selected.");
+      return;
+    }
     updateStatusMutation.mutate(
       { id: selectedBooking._id, status },
       {
@@ -55,7 +63,7 @@ export default function AdminBookingsPage() {
           successAlert("Status Updated", `Booking is now marked as ${status}.`);
           setIsModalOpen(false);
         },
-        onError: (err) => {
+        onError: (err: any) => {
           errorAlert("Failed to Update", err.message || "Failed to update booking status.");
         },
       }
@@ -208,22 +216,22 @@ export default function AdminBookingsPage() {
               {/* Details */}
               <div className="text-sm space-y-2.5 bg-slate-50 p-4 rounded-xl border border-slate-100">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Customer</span>
-                  <span className="font-semibold text-slate-900">{selectedBooking.userId?.name}</span>
+                  <span className="text-slate-500 font-medium">Customer</span>
+                  <span className="font-semibold text-slate-900">{selectedBooking.userId?.name || "Deleted User"}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Package</span>
-                  <span className="font-semibold text-slate-900">{selectedBooking.packageId?.title}</span>
+                  <span className="text-slate-500 font-medium">Package</span>
+                  <span className="font-semibold text-slate-900">{selectedBooking.packageId?.title || "Deleted Package"}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Price</span>
+                  <span className="text-slate-500 font-medium">Total Price</span>
                   <span className="font-bold text-emerald-800">
                     {formatCurrency(selectedBooking.totalPrice)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Current Status</span>
-                  <Badge className="capitalize">{selectedBooking.bookingStatus}</Badge>
+                  <span className="text-slate-500 font-medium">Current Status</span>
+                  <Badge className="capitalize bg-slate-200 text-slate-800 hover:bg-slate-200">{selectedBooking.bookingStatus}</Badge>
                 </div>
               </div>
 

@@ -4,14 +4,30 @@ import { bookingService } from "@/services/booking.service";
 export function useBookings(params = {}) {
   return useQuery({
     queryKey: ["bookings", params],
-    queryFn: () => bookingService.getAll(params),
+    queryFn: async () => {
+      try {
+        const res = await bookingService.getAll(params);
+        return res || { data: { items: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 1 } } };
+      } catch (err) {
+        console.error("useBookings error:", err);
+        return { data: { items: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 1 } } };
+      }
+    },
   });
 }
 
 export function useBookingDetails(id) {
   return useQuery({
     queryKey: ["bookings", id],
-    queryFn: () => bookingService.getById(id),
+    queryFn: async () => {
+      try {
+        const res = await bookingService.getById(id);
+        return res || { data: null };
+      } catch (err) {
+        console.error("useBookingDetails error:", err);
+        return { data: null };
+      }
+    },
     enabled: !!id,
   });
 }

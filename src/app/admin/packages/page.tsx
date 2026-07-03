@@ -392,28 +392,28 @@ export default function AdminPackagesPage() {
                   {/* Package Meta Info */}
                   <div className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="title">Package Title</Label>
-                      <Input id="title" {...register("title")} className="border-slate-200" />
+                      <Label htmlFor="title" className="text-slate-700 font-semibold">Package Title</Label>
+                      <Input id="title" {...register("title")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                       {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="duration">Duration (e.g. 3 Days 2 Nights)</Label>
-                        <Input id="duration" {...register("duration")} className="border-slate-200" />
+                        <Label htmlFor="duration" className="text-slate-700 font-semibold">Duration (e.g. 3 Days 2 Nights)</Label>
+                        <Input id="duration" {...register("duration")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                         {errors.duration && <p className="text-xs text-red-500">{errors.duration.message}</p>}
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="price">Price (BDT)</Label>
-                        <Input id="price" type="number" {...register("price")} className="border-slate-200" />
+                        <Label htmlFor="price" className="text-slate-700 font-semibold">Price (BDT)</Label>
+                        <Input id="price" type="number" {...register("price")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                         {errors.price && <p className="text-xs text-red-500">{errors.price.message}</p>}
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="location">Location / Departure</Label>
-                        <Input id="location" {...register("location")} className="border-slate-200" />
+                        <Label htmlFor="location" className="text-slate-700 font-semibold">Location / Departure</Label>
+                        <Input id="location" {...register("location")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                         {errors.location && <p className="text-xs text-red-500">{errors.location.message}</p>}
                       </div>
                       <div className="flex items-center gap-2 pt-8">
@@ -423,13 +423,13 @@ export default function AdminPackagesPage() {
                           {...register("featured")}
                           className="h-4.5 w-4.5 rounded border-slate-300 text-primary focus:ring-primary"
                         />
-                        <Label htmlFor="featured">Feature this package</Label>
+                        <Label htmlFor="featured" className="text-slate-700 font-semibold">Feature this package</Label>
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label htmlFor="description">Package Description</Label>
-                      <Textarea id="description" rows={5} {...register("description")} className="border-slate-200" />
+                      <Label htmlFor="description" className="text-slate-700 font-semibold">Package Description</Label>
+                      <Textarea id="description" rows={5} {...register("description")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                       {errors.description && <p className="text-xs text-red-500">{errors.description.message}</p>}
                     </div>
                   </div>
@@ -438,7 +438,7 @@ export default function AdminPackagesPage() {
                   <div className="space-y-6">
                     {/* Cloudinary Images Upload */}
                     <div className="space-y-2">
-                      <Label>Package Images</Label>
+                      <Label className="text-slate-700 font-semibold">Package Images</Label>
                       <div className="flex flex-wrap gap-2.5">
                         {uploadedImages.map((url, idx) => (
                           <div key={idx} className="relative h-16 w-20 group rounded-lg overflow-hidden border">
@@ -458,18 +458,18 @@ export default function AdminPackagesPage() {
                           <input type="file" onChange={handleImageUpload} className="hidden" accept="image/*" />
                         </label>
                       </div>
-                      {isUploading && <p className="text-xs text-muted-foreground">Uploading image...</p>}
+                      {isUploading && <p className="text-xs text-slate-500">Uploading image...</p>}
                     </div>
 
                     {/* Included lists */}
                     <div className="space-y-2">
-                      <Label>What is Included</Label>
+                      <Label className="text-slate-700 font-semibold">What is Included</Label>
                       <div className="flex gap-2">
                         <Input
                           placeholder="e.g. Guided boat tour"
                           value={newIncluded}
                           onChange={(e) => setNewIncluded(e.target.value)}
-                          className="border-slate-200 h-9"
+                          className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9"
                         />
                         <Button type="button" size="sm" onClick={addIncludedItem}>
                           Add
@@ -477,7 +477,7 @@ export default function AdminPackagesPage() {
                       </div>
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {includedList.map((item, index) => (
-                          <Badge key={index} variant="secondary" className="gap-1 bg-slate-100 text-slate-700">
+                          <Badge key={index} variant="secondary" className="gap-1 bg-slate-100 text-slate-700 border-slate-200">
                             {item}
                             <button type="button" onClick={() => removeIncludedItem(index)}>
                               <FiX className="h-3 w-3 hover:text-red-500" />
@@ -489,13 +489,13 @@ export default function AdminPackagesPage() {
 
                     {/* Excluded lists */}
                     <div className="space-y-2">
-                      <Label>What is Excluded</Label>
+                      <Label className="text-slate-700 font-semibold">What is Excluded</Label>
                       <div className="flex gap-2">
                         <Input
                           placeholder="e.g. Personal expenses"
                           value={newExcluded}
                           onChange={(e) => setNewExcluded(e.target.value)}
-                          className="border-slate-200 h-9"
+                          className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9"
                         />
                         <Button type="button" size="sm" onClick={addExcludedItem}>
                           Add
@@ -503,7 +503,7 @@ export default function AdminPackagesPage() {
                       </div>
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {excludedList.map((item, index) => (
-                          <Badge key={index} variant="secondary" className="gap-1 bg-slate-100 text-slate-700">
+                          <Badge key={index} variant="secondary" className="gap-1 bg-slate-100 text-slate-700 border-slate-200">
                             {item}
                             <button type="button" onClick={() => removeExcludedItem(index)}>
                               <FiX className="h-3 w-3 hover:text-red-500" />
@@ -530,7 +530,7 @@ export default function AdminPackagesPage() {
                           description: "",
                         })
                       }
-                      className="h-8 text-xs border-slate-200"
+                      className="h-8 text-xs border-slate-200 text-slate-700"
                     >
                       <FiPlus className="mr-1" /> Add Day Plan
                     </Button>
@@ -540,29 +540,29 @@ export default function AdminPackagesPage() {
                     <Card key={field.id} className="border-slate-100 shadow-none bg-slate-50/50 p-4">
                       <div className="flex gap-4">
                         <div className="w-16 shrink-0 space-y-1">
-                          <Label>Day</Label>
+                          <Label className="text-slate-700 font-semibold">Day</Label>
                           <Input
                             type="number"
                             {...register(`itinerary.${index}.day`)}
-                            className="border-slate-200 h-9"
+                            className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9"
                           />
                         </div>
                         <div className="flex-1 space-y-3">
                           <div className="space-y-1">
-                            <Label>Day Title</Label>
+                            <Label className="text-slate-700 font-semibold">Day Title</Label>
                             <Input
                               placeholder="e.g. Arrival at Kotka Beach"
                               {...register(`itinerary.${index}.title`)}
-                              className="border-slate-200 h-9"
+                              className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9"
                             />
                           </div>
                           <div className="space-y-1">
-                            <Label>Day Description</Label>
+                            <Label className="text-slate-700 font-semibold">Day Description</Label>
                             <Textarea
                               placeholder="Describe activities, meals, sights..."
                               rows={2}
                               {...register(`itinerary.${index}.description`)}
-                              className="border-slate-200"
+                              className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900"
                             />
                           </div>
                         </div>

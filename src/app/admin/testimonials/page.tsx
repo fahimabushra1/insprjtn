@@ -280,20 +280,20 @@ export default function AdminTestimonialsPage() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <Label htmlFor="name">Traveler Name</Label>
-                    <Input id="name" {...register("name")} className="border-slate-200 h-9" />
+                    <Label htmlFor="name" className="text-slate-700 font-semibold">Traveler Name</Label>
+                    <Input id="name" {...register("name")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9" />
                     {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor="designation">Designation (e.g. Traveler)</Label>
-                    <Input id="designation" {...register("designation")} className="border-slate-200 h-9" />
+                    <Label htmlFor="designation" className="text-slate-700 font-semibold">Designation (e.g. Traveler)</Label>
+                    <Input id="designation" {...register("designation")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900 h-9" />
                     {errors.designation && <p className="text-xs text-red-500">{errors.designation.message}</p>}
                   </div>
                 </div>
 
                 {/* Rating select stars bar */}
                 <div className="space-y-1">
-                  <Label>Star Rating ({selectedRating} Stars)</Label>
+                  <Label className="text-slate-700 font-semibold">Star Rating ({selectedRating} Stars)</Label>
                   <div className="flex gap-1.5 pt-1.5">
                     {[1, 2, 3, 4, 5].map((num) => (
                       <button
@@ -303,7 +303,7 @@ export default function AdminTestimonialsPage() {
                         className="focus:outline-none"
                       >
                         <FaStar
-                          className={`h-7 w-7 transition-colors ${
+                           className={`h-7 w-7 transition-colors ${
                             num <= selectedRating
                               ? "text-amber-500 fill-amber-500"
                               : "text-slate-200"
@@ -316,26 +316,26 @@ export default function AdminTestimonialsPage() {
 
                 {/* Avatar Image upload */}
                 <div className="space-y-2">
-                  <Label>Traveler Profile Photo</Label>
+                  <Label className="text-slate-700 font-semibold">Traveler Profile Photo</Label>
                   <div className="flex items-center gap-4">
                     <Avatar className="h-14 w-14 border">
                       <AvatarImage src={photoUrl} />
                       <AvatarFallback>
-                        <FiUser />
+                        <FiUser className="text-slate-400" />
                       </AvatarFallback>
                     </Avatar>
-                    <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition-colors">
+                    <label className="flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 transition-colors bg-white">
                       <FiUpload className="h-4 w-4" />
                       Upload Photo
                       <input type="file" onChange={handleImageUpload} className="hidden" accept="image/*" />
                     </label>
                   </div>
-                  {isUploading && <p className="text-xs text-muted-foreground">Uploading image...</p>}
+                  {isUploading && <p className="text-xs text-slate-500">Uploading image...</p>}
                 </div>
 
                 <div className="space-y-1">
-                  <Label htmlFor="review">Review Content</Label>
-                  <Textarea id="review" rows={4} {...register("review")} className="border-slate-200" />
+                  <Label htmlFor="review" className="text-slate-700 font-semibold">Review Content</Label>
+                  <Textarea id="review" rows={4} {...register("review")} className="border-slate-200 bg-white text-slate-900 focus-visible:text-slate-900" />
                   {errors.review && <p className="text-xs text-red-500">{errors.review.message}</p>}
                 </div>
 

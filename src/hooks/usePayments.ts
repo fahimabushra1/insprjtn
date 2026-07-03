@@ -4,7 +4,15 @@ import { paymentService } from "@/services/payment.service";
 export function usePayments(params = {}) {
   return useQuery({
     queryKey: ["payments", params],
-    queryFn: () => paymentService.getAll(params),
+    queryFn: async () => {
+      try {
+        const res = await paymentService.getAll(params);
+        return res || { data: { items: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 1 } } };
+      } catch (err) {
+        console.error("usePayments error:", err);
+        return { data: { items: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 1 } } };
+      }
+    },
   });
 }
 

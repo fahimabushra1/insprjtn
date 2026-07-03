@@ -36,11 +36,18 @@ export async function verifyAuth(
   roles?: ("admin" | "customer")[]
 ): Promise<{ user: AuthenticatedUser; decodedToken: DecodedFirebaseToken }> {
   const authHeader = request.headers.get("authorization");
-  if (!authHeader?.startsWith("Bearer ")) {
-    throw new Error("401: Authentication required");
+  if (!authHeader) {
+    throw new Error("401: Authorization header is missing");
+  }
+  if (!authHeader.startsWith("Bearer ")) {
+    throw new Error("401: Authorization header must use Bearer scheme");
   }
 
   const token = authHeader.split(" ")[1];
+  if (!token) {
+    throw new Error("401: Bearer token is missing");
+  }
+
   const auth = getFirebaseAuth();
   if (!auth) {
     throw new Error("500: Authentication service unavailable");
@@ -52,7 +59,10 @@ export async function verifyAuth(
   try {
     decodedToken = await auth.verifyIdToken(token);
   } catch (err: any) {
-    throw new Error(`401: Invalid token - ${err.message}`);
+    if (err.code === "auth/id-token-expired") {
+      throw new Error("401: Firebase token has expired");
+    }
+    throw new Error(`401: Invalid Firebase token - ${err.message}`);
   }
 
   const user = await User.findOne({ firebaseUid: decodedToken.uid });

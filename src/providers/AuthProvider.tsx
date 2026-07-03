@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
   const [firebaseUser, setFirebaseUser] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isAuthActionInProgress = useRef(false);
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -40,6 +41,10 @@ export function AuthProvider({ children }) {
 
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       setFirebaseUser(fbUser);
+      if (isAuthActionInProgress.current) {
+        setLoading(false);
+        return;
+      }
       if (fbUser) {
         await fetchProfile();
       } else {
@@ -52,40 +57,55 @@ export function AuthProvider({ children }) {
   }, [fetchProfile]);
 
   const register = async ({ name, email, password, phone }) => {
-    const auth = getFirebaseAuth();
-    await createUserWithEmailAndPassword(auth, email, password);
-    const response = await authService.register({ name, phone });
-    setUser(response.data);
-    return response.data;
+    isAuthActionInProgress.current = true;
+    try {
+      const auth = getFirebaseAuth();
+      await createUserWithEmailAndPassword(auth, email, password);
+      const response = await authService.register({ name, phone });
+      setUser(response.data);
+      return response.data;
+    } finally {
+      isAuthActionInProgress.current = false;
+    }
   };
 
   const login = async ({ email, password }) => {
-    const auth = getFirebaseAuth();
-    await signInWithEmailAndPassword(auth, email, password);
-    const profile = await fetchProfile();
-    if (!profile) {
-      throw new Error("Account not registered. Please sign up first.");
+    isAuthActionInProgress.current = true;
+    try {
+      const auth = getFirebaseAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+      const profile = await fetchProfile();
+      if (!profile) {
+        throw new Error("Account not registered. Please sign up first.");
+      }
+      return profile;
+    } finally {
+      isAuthActionInProgress.current = false;
     }
-    return profile;
   };
 
   const loginWithGoogle = async () => {
-    const auth = getFirebaseAuth();
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-
+    isAuthActionInProgress.current = true;
     try {
-      const profile = await fetchProfile();
-      if (profile) return profile;
-    } catch {
-      // User not in MongoDB yet
-    }
+      const auth = getFirebaseAuth();
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
 
-    const response = await authService.register({
-      name: result.user.displayName || "User",
-    });
-    setUser(response.data);
-    return response.data;
+      try {
+        const profile = await fetchProfile();
+        if (profile) return profile;
+      } catch {
+        // User not in MongoDB yet
+      }
+
+      const response = await authService.register({
+        name: result.user.displayName || "User",
+      });
+      setUser(response.data);
+      return response.data;
+    } finally {
+      isAuthActionInProgress.current = false;
+    }
   };
 
   const logout = async () => {

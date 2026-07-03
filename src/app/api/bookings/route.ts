@@ -16,7 +16,11 @@ const createBookingSchema = z.object({
   notes: z.string().optional().default(""),
 });
 
+import { backendLogger } from "@/lib/backend/logger";
+
 export async function GET(request: NextRequest) {
+  const reqStart = Date.now();
+  backendLogger.info(`GET /api/bookings started`);
   try {
     const { user } = await verifyAuth(request);
     await connectDB();
@@ -38,6 +42,7 @@ export async function GET(request: NextRequest) {
 
     const skip = (page - 1) * limit;
 
+    const queryStart = Date.now();
     const [bookings, total] = await Promise.all([
       Booking.find(filter)
         .populate("packageId", "title duration price location images slug")
@@ -49,11 +54,33 @@ export async function GET(request: NextRequest) {
         .lean(),
       Booking.countDocuments(filter),
     ]);
+    backendLogger.info(`MongoDB Booking query took ${Date.now() - queryStart}ms`);
 
+    // Map bookings to ensure nested populated objects are never null
+    const sanitizedBookings = bookings.map((booking: any) => ({
+      ...booking,
+      userId: booking.userId || {
+        _id: "deleted-user",
+        name: "Deleted User",
+        email: "deleted@insprjtn.com",
+        phone: "N/A"
+      },
+      packageId: booking.packageId || {
+        _id: "deleted-package",
+        title: "Deleted Package",
+        duration: "N/A",
+        price: 0,
+        location: "N/A",
+        images: [],
+        slug: ""
+      }
+    }));
+
+    backendLogger.info(`GET /api/bookings finished in ${Date.now() - reqStart}ms`);
     return apiResponse(
       200,
       {
-        items: bookings,
+        items: sanitizedBookings,
         pagination: {
           page,
           limit,
@@ -64,6 +91,7 @@ export async function GET(request: NextRequest) {
       "Bookings retrieved successfully"
     );
   } catch (error: any) {
+    backendLogger.error("GET /api/bookings error", error);
     const [statusStr, message] = error.message.split(": ");
     const status = parseInt(statusStr) || 500;
     return apiError(status, message || error.message);

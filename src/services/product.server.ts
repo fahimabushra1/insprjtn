@@ -7,16 +7,28 @@ const getBaseUrl = () => {
   return `${cleanUrl}/api`;
 };
 
-export const fetchGalleryServer = async (params = {}) => {
+export const fetchProductsServer = async (params = {}) => {
   const searchParams = new URLSearchParams(params).toString();
-  const url = `${getBaseUrl()}/gallery${searchParams ? `?${searchParams}` : ""}`;
+  const url = `${getBaseUrl()}/products${searchParams ? `?${searchParams}` : ""}`;
 
   const response = await fetch(url, {
-    next: { revalidate: 600 },
+    next: { revalidate: 60 },
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch gallery");
+    throw new Error("Failed to fetch products");
+  }
+
+  return response.json();
+};
+
+export const fetchProductByIdServer = async (id: string) => {
+  const response = await fetch(`${getBaseUrl()}/products/${id}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!response.ok) {
+    return null;
   }
 
   return response.json();
