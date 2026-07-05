@@ -36,6 +36,13 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     booking.bookingStatus = parseResult.data.status;
+    if (parseResult.data.status === "confirmed") {
+      booking.paymentStatus = "paid";
+    } else if (parseResult.data.status === "cancelled") {
+      booking.paymentStatus = "failed";
+    } else if (parseResult.data.status === "pending") {
+      booking.paymentStatus = "pending";
+    }
     await booking.save();
 
     return apiResponse(200, booking, "Booking status updated successfully");

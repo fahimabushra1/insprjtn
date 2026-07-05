@@ -1,15 +1,28 @@
 import mongoose from "mongoose";
-import dns from "dns";
+import dns from "dns/promises";
+
+// Pre-register Mongoose models to prevent MissingSchemaError on populate queries
+import "@/lib/db/models/User.model";
+import "@/lib/db/models/Package.model";
+import "@/lib/db/models/Booking.model";
+import "@/lib/db/models/Payment.model";
+import "@/lib/db/models/Contact.model";
+import "@/lib/db/models/Blog.model";
+import "@/lib/db/models/Gallery.model";
+import "@/lib/db/models/Testimonial.model";
+import "@/lib/db/models/Review.model";
+import "@/lib/db/models/Faq.model";
+import "@/lib/db/models/LegalPage.model";
 
 // Fix Node.js DNS resolution order and server issues with MongoDB SRV records
-if (typeof dns.setDefaultResultOrder === "function") {
-  dns.setDefaultResultOrder("ipv4first");
-}
-try {
-  dns.setServers(["8.8.8.8", "8.8.4.4"]);
-} catch (error) {
-  console.warn("Could not set DNS servers:", error);
-}
+// if (typeof dns.setDefaultResultOrder === "function") {
+//   dns.setDefaultResultOrder("ipv4first");
+// }
+// try {
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+// } catch (error) {
+//   console.warn("Could not set DNS servers:", error);
+// }
 
 let cachedConnection: typeof mongoose | null = null;
 
@@ -33,7 +46,8 @@ export async function connectDB() {
     console.log(`MongoDB connected: ${conn.connection.host}`);
     return conn;
   } catch (error: any) {
-    console.error("MongoDB connection error:", error.message);
+    console.error("MongoDB connection Error:", error.message);
     throw error;
   }
+
 }

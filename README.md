@@ -9,6 +9,8 @@ Insaniat Parjatan is a complete, production-ready tour operator platform special
 - **Nature-Inspired Responsive UI**: Mobile-first premium layout styled with Tailwind CSS, supporting dark/light mode toggles and smooth Framer Motion animations.
 - **BD Government Holidays Calendar**: Built-in 2026 public holidays calendar integrated with the Package Details sidebar and Checkout pages. Customers can view official holidays easily and pick them to autofill dates.
 - **Bilingual Blogs & Auto-Translation**: Full support for writing blogs in both English and Bangla. Includes real-time translation triggers (EN ⇄ BN) using Google's translation api in the admin panel and a language toggle for public readers.
+- **Interactive FAQ Center**: Categorized accordion layout with real-time client-side search filtering answering questions about safety, clothing checklists, meals, and booking procedures.
+- **Legal & Policies Portal**: Unified tab-based layout hosting the Terms of Service, Privacy Policy (data usage, authentication standards), and Refund Policy (cancellation fees, timelines).
 - **Role-Based Auth (Firebase)**: Authentication and access control handled via Firebase Auth on the client and Firebase Admin SDK on the backend.
   - Automatically flags user `bushra.arifeen@gmail.com` as `"admin"` role upon registration.
 - **Dynamic Checkout & Payments**: Interactive booking creation with payments verified securely on the backend (supporting Bkash, Nagad, Rocket, Bank).

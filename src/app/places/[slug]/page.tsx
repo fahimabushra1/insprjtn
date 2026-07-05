@@ -128,7 +128,7 @@ export default function PlaceDetailPage() {
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   Bagerhat represents an exceptionally complete example of early brick mosque architecture in Southeast Asia. 
-                  Important sights include Khan Jahan Ali's Tomb, the Single-Dome Singar Mosque, Nine-Dome Mosque, and the Bagerhat Museum.
+                  Important sights include Khan Jahan Ali&apos;s Tomb, the Single-Dome Singar Mosque, Nine-Dome Mosque, and the Bagerhat Museum.
                 </p>
               </div>
             )}

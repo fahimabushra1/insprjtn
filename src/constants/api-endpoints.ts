@@ -51,6 +51,15 @@ export const API_ENDPOINTS = {
   ANALYTICS: {
     STATS: `${API_BASE}/analytics`,
   },
+  FAQS: {
+    LIST: `${API_BASE}/faqs`,
+    BY_ID: (id) => `${API_BASE}/faqs/${id}`,
+  },
+  LEGALS: {
+    BY_SLUG: (slug) => `${API_BASE}/legal/${slug}`,
+    ADMIN_LIST: `${API_BASE}/admin/legal`,
+    ADMIN_BY_ID: (id) => `${API_BASE}/admin/legal/${id}`,
+  },
   UPLOAD: `${API_BASE}/upload`,
 };
 

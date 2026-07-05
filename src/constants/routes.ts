@@ -8,6 +8,8 @@ export const ROUTES = {
   TESTIMONIALS: "/testimonials",
   CONTACT: "/contact",
   SHOP: "/shop",
+  FAQ: "/faq",
+  LEGAL: "/legal",
   LOGIN: "/login",
   REGISTER: "/register",
   DASHBOARD: "/dashboard",

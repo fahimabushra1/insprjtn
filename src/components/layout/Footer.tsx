@@ -67,6 +67,11 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
           <p>&copy; {currentYear} Insaniat Parjatan. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href={ROUTES.FAQ} className="hover:text-primary transition-colors">FAQ</Link>
+            <span>·</span>
+            <Link href={ROUTES.LEGAL} className="hover:text-primary transition-colors">Legal & Policies</Link>
+          </div>
           <p>Crafted with care for nature lovers</p>
         </div>
       </div>

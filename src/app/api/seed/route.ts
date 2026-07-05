@@ -11,6 +11,8 @@ import { Place } from "@/lib/db/models/Place.model";
 import { Route } from "@/lib/db/models/Route.model";
 import { TourAvailability } from "@/lib/db/models/TourAvailability.model";
 import { Announcement } from "@/lib/db/models/Announcement.model";
+import { Faq } from "@/lib/db/models/Faq.model";
+import { LegalPage } from "@/lib/db/models/LegalPage.model";
 import { apiResponse, apiError } from "@/lib/backend/response";
 import { slugify } from "@/lib/backend/slugify";
 
@@ -888,6 +890,136 @@ export async function GET(request: NextRequest) {
       ]);
     }
 
+    // 12. Seed FAQs
+    const countFaqs = await Faq.countDocuments();
+    if (countFaqs === 0) {
+      await Faq.create([
+        {
+          question: "How do I book a tour with Insaniat Parjatan?",
+          answer: "<p>Booking is simple! Browse our Tour Packages, select your preferred departure date and number of travelers, click 'Book Now', and complete the checkout form. Once registered, submit your payment proof (transaction ID) via bKash, Nagad, Rocket, or Bank Transfer in the checkout payment page to confirm your reservation.</p>",
+          category: "General & Bookings",
+          order: 1,
+          isPublished: true,
+          createdBy: admin._id,
+        },
+        {
+          question: "What is your cancellation and refund policy?",
+          answer: "<p>Cancellations made 7 days or more before the departure date receive a full refund. Cancellations made between 3 to 7 days before departure receive a 50% refund. Within 72 hours of departure, refunds are not possible as boat reservations, forest department permissions, and catering orders are finalized in advance.</p>",
+          category: "General & Bookings",
+          order: 2,
+          isPublished: true,
+          createdBy: admin._id,
+        },
+        {
+          question: "Is it safe to travel inside the Sundarbans?",
+          answer: "<p>Yes, traveling with Insaniat Parjatan is highly safe. Our tour ships are fully equipped with safety gear, life jackets, and radio communications. All excursions into the forest are accompanied by armed forest guards and highly experienced local guides who strictly follow safety protocols.</p>",
+          category: "Travel & Forest Safety",
+          order: 3,
+          isPublished: true,
+          createdBy: admin._id,
+        },
+        {
+          question: "Will I get mobile network coverage inside the forest?",
+          answer: "<p>Mobile network coverage is extremely limited inside the deep mangrove forest. You may get weak signals from Grameenphone or Teletalk at specific wildlife sanctuary points (like Kotka or Hiron Point), but for the majority of the trip, you will be off-grid. We recommend informing your family in advance.</p>",
+          category: "Travel & Forest Safety",
+          order: 4,
+          isPublished: true,
+          createdBy: admin._id,
+        },
+      ]);
+    }
+
+    // 13. Seed Legal Pages
+    const countLegalPages = await LegalPage.countDocuments();
+    if (countLegalPages === 0) {
+      await LegalPage.create([
+        {
+          title: "Privacy Policy",
+          slug: "privacy-policy",
+          content: `
+            <h2>Privacy Policy</h2>
+            <p>At Insaniat Parjatan, we respect your privacy and are committed to safeguarding the personal information you share with us.</p>
+            <h3>1. Information We Collect</h3>
+            <p>We collect information when you register an account, make a reservation, or contact us. This includes your name, email address, phone number, physical address, and billing details (such as transaction IDs).</p>
+            <h3>2. How We Use Your Data</h3>
+            <p>Your personal data is used solely to issue official travel permits from the Bangladesh Forest Department, manage your tour reservations, and verify payment proofs. We never sell or share your data with third-party advertisers.</p>
+          `,
+          isPublished: true,
+          seoTitle: "Privacy Policy | Insaniat Parjatan",
+          seoDescription: "Read the Privacy Policy of Insaniat Parjatan to learn how we protect your personal travel data.",
+          ogTitle: "Privacy Policy",
+          ogDescription: "Read the Privacy Policy of Insaniat Parjatan.",
+          ogImage: "https://images.unsplash.com/photo-1608958416738-f1f41b315263?w=800",
+          canonicalUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/privacy-policy`,
+          updatedBy: admin._id,
+        },
+        {
+          title: "Terms and Conditions",
+          slug: "terms-and-conditions",
+          content: `
+            <h2>Terms of Service</h2>
+            <p>Welcome to Insaniat Parjatan. By accessing our platform, booking tours, or registering an account, you agree to be bound by the following terms and conditions.</p>
+            <h3>1. Booking & Pricing</h3>
+            <p>All bookings are subject to availability and final confirmation. Tour prices displayed on our website are per person and subject to change depending on forest entrance fees and fuel pricing.</p>
+            <h3>2. Environmental Guidelines</h3>
+            <p>The Sundarbans is a protected UNESCO World Heritage Site. Littering, throwing plastic in rivers, making loud noises, or carrying any items that can disturb wildlife is strictly prohibited.</p>
+          `,
+          isPublished: true,
+          seoTitle: "Terms and Conditions | Insaniat Parjatan",
+          seoDescription: "Read the Terms and Conditions of Insaniat Parjatan before booking your tour.",
+          ogTitle: "Terms and Conditions",
+          ogDescription: "Read the Terms and Conditions of Insaniat Parjatan.",
+          ogImage: "https://images.unsplash.com/photo-1608958416738-f1f41b315263?w=800",
+          canonicalUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/terms-and-conditions`,
+          updatedBy: admin._id,
+        },
+        {
+          title: "Refund Policy",
+          slug: "refund-policy",
+          content: `
+            <h2>Cancellation & Refund Rules</h2>
+            <p>Because we book permits, guide shifts, and boat cruises well in advance, we maintain a structured cancellation policy.</p>
+            <h3>1. Cancellation Timeline</h3>
+            <ul>
+              <li><strong>7+ Days Prior to Tour:</strong> 100% Refund of the payment.</li>
+              <li><strong>3 to 7 Days Prior to Tour:</strong> 50% Refund.</li>
+              <li><strong>Less than 72 Hours Prior to Tour:</strong> No Refund.</li>
+            </ul>
+            <h3>2. Processing Refunds</h3>
+            <p>Refunds are processed back to the original payment channel (e.g. bKash or Nagad wallet) within 3-5 business days.</p>
+          `,
+          isPublished: true,
+          seoTitle: "Refund & Cancellation Policy | Insaniat Parjatan",
+          seoDescription: "Learn about the refund and cancellation timelines for Sundarban tour reservations.",
+          ogTitle: "Refund Policy",
+          ogDescription: "Read the Refund & Cancellation Policy of Insaniat Parjatan.",
+          ogImage: "https://images.unsplash.com/photo-1608958416738-f1f41b315263?w=800",
+          canonicalUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/refund-policy`,
+          updatedBy: admin._id,
+        },
+        {
+          title: "Cookie Policy",
+          slug: "cookie-policy",
+          content: `
+            <h2>Cookie Policy</h2>
+            <p>This Cookie Policy explains how Insaniat Parjatan uses cookies and similar technologies to recognize you when you visit our website.</p>
+            <h3>1. What are Cookies?</h3>
+            <p>Cookies are small data files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide reporting information.</p>
+            <h3>2. How We Use Cookies</h3>
+            <p>We use essential cookies for user authentication (Firebase session tracking) and preferences such as language and theme selections. You can configure your browser to decline cookies, but some features might be disabled.</p>
+          `,
+          isPublished: true,
+          seoTitle: "Cookie Policy | Insaniat Parjatan",
+          seoDescription: "Understand how we use cookies to personalize your browser experience.",
+          ogTitle: "Cookie Policy",
+          ogDescription: "Read the Cookie Policy of Insaniat Parjatan.",
+          ogImage: "https://images.unsplash.com/photo-1608958416738-f1f41b315263?w=800",
+          canonicalUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/cookie-policy`,
+          updatedBy: admin._id,
+        },
+      ]);
+    }
+
     return apiResponse(
       200,
       {
@@ -898,8 +1030,10 @@ export async function GET(request: NextRequest) {
         announcementsSeeded: countAnnouncements === 0 ? 2 : 0,
         placesSeeded: countPlaces === 0 ? 14 : 0,
         routesSeeded: countRoutes === 0 ? 14 : 0,
+        faqsSeeded: countFaqs === 0 ? 4 : 0,
+        legalPagesSeeded: countLegalPages === 0 ? 4 : 0,
       },
-      "Database seeded successfully with Travel Calendar and Route Map resources!"
+      "Database seeded successfully with Travel Calendar, Route Map, and CMS resources!"
     );
   } catch (error: any) {
     console.error("Seeding error:", error);

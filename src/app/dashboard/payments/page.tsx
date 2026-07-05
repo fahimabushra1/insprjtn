@@ -12,7 +12,7 @@ import { formatCurrency, formatDate } from "@/utils/format";
 export default function PaymentHistoryPage() {
   const { data: paymentsResponse, isLoading } = usePayments();
   const paymentsData = paymentsResponse?.data;
-  const payments = paymentsData?.payments || [];
+  const payments = paymentsData?.items || [];
 
   const getPaymentStatusVariant = (status) => {
     switch (status) {

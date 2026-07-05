@@ -28,9 +28,9 @@ export function LanguageProvider({
   useEffect(() => {
     const savedLang = localStorage.getItem(storageKey) as Language;
     if (savedLang === "en" || savedLang === "bn") {
-      setLanguage(savedLang);
+      Promise.resolve().then(() => setLanguage(savedLang));
     }
-    setMounted(true);
+    Promise.resolve().then(() => setMounted(true));
   }, [storageKey]);
 
   useEffect(() => {

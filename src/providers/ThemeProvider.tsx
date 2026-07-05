@@ -28,14 +28,14 @@ export function ThemeProvider({
   useEffect(() => {
     const savedTheme = localStorage.getItem(storageKey) as Theme;
     if (savedTheme) {
-      setTheme(savedTheme);
+      Promise.resolve().then(() => setTheme(savedTheme));
     } else {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-      setTheme(systemTheme);
+      Promise.resolve().then(() => setTheme(systemTheme));
     }
-    setMounted(true);
+    Promise.resolve().then(() => setMounted(true));
   }, [storageKey]);
 
   useEffect(() => {

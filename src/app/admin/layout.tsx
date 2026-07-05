@@ -18,6 +18,8 @@ import {
   FiCalendar,
   FiMap,
   FiShoppingBag,
+  FiHelpCircle,
+  FiFileText,
 } from "react-icons/fi";
 import { useAuth } from "@/hooks/useAuth";
 import FullPageLoader from "@/components/loaders/FullPageLoader";
@@ -38,6 +40,8 @@ const ADMIN_LINKS = [
   { href: `${ROUTES.ADMIN}/contacts`, label: "Contact Messages", icon: FiMail },
   { href: `${ROUTES.ADMIN}/calendar`, label: "Travel Calendar", icon: FiCalendar },
   { href: `${ROUTES.ADMIN}/map`, label: "Explorer Map", icon: FiMap },
+  { href: `${ROUTES.ADMIN}/faqs`, label: "Manage FAQs", icon: FiHelpCircle },
+  { href: `${ROUTES.ADMIN}/legal-pages`, label: "Manage Legal", icon: FiFileText },
 ];
 
 export default function AdminLayout({ children }) {

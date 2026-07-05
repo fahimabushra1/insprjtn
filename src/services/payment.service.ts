@@ -13,7 +13,7 @@ export const paymentService = {
   },
 
   verify: async (id) => {
-    const response = await api.post(API_ENDPOINTS.PAYMENTS.VERIFY(id));
+    const response = await api.patch(API_ENDPOINTS.PAYMENTS.VERIFY(id));
     return response.data;
   },
 };

@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const auth = getFirebaseAuth();
     if (!auth) {
-      setLoading(false);
+      Promise.resolve().then(() => setLoading(false));
       return;
     }
 

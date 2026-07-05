@@ -18,7 +18,7 @@ import { formatCurrency, formatDate } from "@/utils/format";
 export default function MyBookingsPage() {
   const { data: bookingsResponse, isLoading, error } = useBookings();
   const bookingsData = bookingsResponse?.data;
-  const bookings = bookingsData?.bookings || [];
+  const bookings = bookingsData?.items || [];
 
   const cancelBookingMutation = useCancelBooking();
   const confirmDelete = useDeleteConfirmation();
@@ -136,7 +136,7 @@ export default function MyBookingsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        {booking.paymentStatus === "pending" && !booking.paymentId && (
+                        {booking.bookingStatus === "pending" && booking.paymentStatus === "pending" && !booking.paymentId && (
                           <Button className="bg-amber-600 hover:bg-amber-700 text-white" size="sm" asChild>
                             <Link href={`/checkout/${booking._id}/payment`}>Pay Now</Link>
                           </Button>
@@ -205,7 +205,7 @@ export default function MyBookingsPage() {
 
                   {/* Actions */}
                   <div className="flex gap-3 pt-2 border-t justify-end">
-                    {booking.paymentStatus === "pending" && !booking.paymentId && (
+                    {booking.bookingStatus === "pending" && booking.paymentStatus === "pending" && !booking.paymentId && (
                       <Button className="bg-amber-600 hover:bg-amber-700 text-white w-full" size="sm" asChild>
                         <Link href={`/checkout/${booking._id}/payment`}>Pay Now</Link>
                       </Button>

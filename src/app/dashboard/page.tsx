@@ -15,7 +15,7 @@ export default function DashboardOverviewPage() {
   const { user } = useAuth();
   const { data: bookingsResponse, isLoading } = useBookings();
   const bookingsData = bookingsResponse?.data;
-  const bookings = bookingsData?.bookings || [];
+  const bookings = bookingsData?.items || [];
 
   if (isLoading) {
     return <DashboardSkeleton />;
@@ -163,7 +163,7 @@ export default function DashboardOverviewPage() {
                         {booking.paymentStatus}
                       </Badge>
                     </div>
-                    {booking.paymentStatus === "pending" && !booking.paymentId && (
+                    {booking.bookingStatus === "pending" && booking.paymentStatus === "pending" && !booking.paymentId && (
                       <Button className="bg-amber-600 text-white hover:bg-amber-700" size="sm" asChild>
                         <Link href={`/checkout/${booking._id}/payment`}>Pay Now</Link>
                       </Button>

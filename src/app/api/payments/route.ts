@@ -3,7 +3,6 @@ import { connectDB } from "@/lib/backend/db";
 import { Payment } from "@/lib/db/models/Payment.model";
 import { verifyAuth } from "@/lib/backend/auth";
 import { apiResponse, apiError } from "@/lib/backend/response";
-
 import { backendLogger } from "@/lib/backend/logger";
 
 export async function GET(request: NextRequest) {

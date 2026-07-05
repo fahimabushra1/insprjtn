@@ -111,7 +111,7 @@ export default function DashboardLayout({ children }) {
     <div className="flex min-h-screen bg-slate-50">
       {/* Desktop Sidebar */}
       <aside className="hidden w-64 md:block shrink-0 border-r border-slate-100">
-        <SidebarContent />
+        {SidebarContent()}
       </aside>
 
       {/* Main Content Area */}
@@ -126,7 +126,7 @@ export default function DashboardLayout({ children }) {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="p-0 w-64 border-none">
-              <SidebarContent />
+              {SidebarContent()}
             </SheetContent>
           </Sheet>
         </header>
