@@ -167,4 +167,3 @@ export default function FAQPage() {
     </div>
   );
 }
-export const revalidate = 300;
