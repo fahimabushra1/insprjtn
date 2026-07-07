@@ -53,5 +53,10 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "jwks-rsa": {
+      "jose": "4.15.9"
+    }
   }
 }
