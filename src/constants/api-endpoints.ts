@@ -1,4 +1,4 @@
-const API_BASE = "/api/v1";
+const API_BASE = "/api";
 
 export const API_ENDPOINTS = {
   HEALTH: `${API_BASE}/health`,
